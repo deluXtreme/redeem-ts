@@ -1,247 +1,247 @@
 export const subscriptionManagerAbi = [
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "subId",
-        "type": "uint256"
+        indexed: true,
+        internalType: "uint256",
+        name: "subId",
+        type: "uint256",
       },
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "module",
-        "type": "address"
+        indexed: true,
+        internalType: "address",
+        name: "module",
+        type: "address",
       },
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "nextRedeemAt",
-        "type": "uint256"
-      }
+        indexed: true,
+        internalType: "uint256",
+        name: "nextRedeemAt",
+        type: "uint256",
+      },
     ],
-    "name": "Redeemed",
-    "type": "event"
+    name: "Redeemed",
+    type: "event",
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "subId",
-        "type": "uint256"
+        indexed: true,
+        internalType: "uint256",
+        name: "subId",
+        type: "uint256",
       },
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "module",
-        "type": "address"
-      }
+        indexed: true,
+        internalType: "address",
+        name: "module",
+        type: "address",
+      },
     ],
-    "name": "SubscriptionCancelled",
-    "type": "event"
+    name: "SubscriptionCancelled",
+    type: "event",
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "subId",
-        "type": "uint256"
+        indexed: true,
+        internalType: "uint256",
+        name: "subId",
+        type: "uint256",
       },
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "module",
-        "type": "address"
+        indexed: true,
+        internalType: "address",
+        name: "module",
+        type: "address",
       },
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "subscriber",
-        "type": "address"
+        indexed: true,
+        internalType: "address",
+        name: "subscriber",
+        type: "address",
       },
       {
-        "indexed": false,
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
+        indexed: false,
+        internalType: "address",
+        name: "recipient",
+        type: "address",
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "frequency",
-        "type": "uint256"
-      }
+        indexed: false,
+        internalType: "uint256",
+        name: "frequency",
+        type: "uint256",
+      },
     ],
-    "name": "SubscriptionCreated",
-    "type": "event"
+    name: "SubscriptionCreated",
+    type: "event",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "module",
-        "type": "address"
+        internalType: "address",
+        name: "module",
+        type: "address",
       },
       {
-        "internalType": "uint256",
-        "name": "subId",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "subId",
+        type: "uint256",
+      },
     ],
-    "name": "cancel",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "cancel",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "getAllModules",
-    "outputs": [
+    inputs: [],
+    name: "getAllModules",
+    outputs: [
       {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
     ],
-    "name": "modules",
-    "outputs": [
+    name: "modules",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "module",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "module",
+        type: "address",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "module",
-        "type": "address"
+        internalType: "address",
+        name: "module",
+        type: "address",
       },
       {
-        "internalType": "uint256",
-        "name": "subId",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "subId",
+        type: "uint256",
       },
       {
-        "internalType": "address[]",
-        "name": "flowVertices",
-        "type": "address[]"
+        internalType: "address[]",
+        name: "flowVertices",
+        type: "address[]",
       },
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint16",
-            "name": "streamSinkId",
-            "type": "uint16"
+            internalType: "uint16",
+            name: "streamSinkId",
+            type: "uint16",
           },
           {
-            "internalType": "uint192",
-            "name": "amount",
-            "type": "uint192"
-          }
+            internalType: "uint192",
+            name: "amount",
+            type: "uint192",
+          },
         ],
-        "internalType": "struct TypeDefinitions.FlowEdge[]",
-        "name": "flow",
-        "type": "tuple[]"
+        internalType: "struct TypeDefinitions.FlowEdge[]",
+        name: "flow",
+        type: "tuple[]",
       },
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint16",
-            "name": "sourceCoordinate",
-            "type": "uint16"
+            internalType: "uint16",
+            name: "sourceCoordinate",
+            type: "uint16",
           },
           {
-            "internalType": "uint16[]",
-            "name": "flowEdgeIds",
-            "type": "uint16[]"
+            internalType: "uint16[]",
+            name: "flowEdgeIds",
+            type: "uint16[]",
           },
           {
-            "internalType": "bytes",
-            "name": "data",
-            "type": "bytes"
-          }
+            internalType: "bytes",
+            name: "data",
+            type: "bytes",
+          },
         ],
-        "internalType": "struct TypeDefinitions.Stream[]",
-        "name": "streams",
-        "type": "tuple[]"
+        internalType: "struct TypeDefinitions.Stream[]",
+        name: "streams",
+        type: "tuple[]",
       },
       {
-        "internalType": "bytes",
-        "name": "packedCoordinates",
-        "type": "bytes"
-      }
+        internalType: "bytes",
+        name: "packedCoordinates",
+        type: "bytes",
+      },
     ],
-    "name": "redeemPayment",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "redeemPayment",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "module",
-        "type": "address"
+        internalType: "address",
+        name: "module",
+        type: "address",
       },
       {
-        "internalType": "bool",
-        "name": "isEnabled",
-        "type": "bool"
-      }
+        internalType: "bool",
+        name: "isEnabled",
+        type: "bool",
+      },
     ],
-    "name": "registerModule",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "registerModule",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
+        internalType: "address",
+        name: "recipient",
+        type: "address",
       },
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
       },
       {
-        "internalType": "uint256",
-        "name": "frequency",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "frequency",
+        type: "uint256",
+      },
     ],
-    "name": "subscribe",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
+    name: "subscribe",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ] as const;

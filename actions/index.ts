@@ -1,16 +1,15 @@
-import {
-	ActionFn,
-	Context,
-	Event,
-	BlockEvent
-} from '@tenderly/actions';
-import { newSubscriptionEvent } from './src';
+import { ActionFn, Context, Event } from "@tenderly/actions";
+import { newSubscriptionEvent, runRedeemer } from "./src";
 
 export const entryPoint: ActionFn = async (context: Context, event: Event) => {
-	await newSubscriptionEvent(context, event)
-}
+  console.log("Entry Point Triggered", event);
+  await newSubscriptionEvent(context, event);
+};
 
-export const blockHelloWorldFn: ActionFn = async (context: Context, event: Event) => {
-	let blockEvent = event as BlockEvent;
-	console.log(blockEvent);
-}
+export const blockWatchingRedeemer: ActionFn = async (
+  context: Context,
+  _: Event,
+) => {
+  const currentTime = BigInt(Math.floor(Date.now() / 1000));
+  await runRedeemer(context, currentTime);
+};

@@ -6,7 +6,7 @@ actions:
     specs:
       block-number-printer:
         description: Example Web3 Action that logs block number once it is mined.
-        function: index:blockHelloWorldFn
+        function: index:blockWatchingRedeemer
         trigger:
           type: block
           block:
@@ -27,4 +27,14 @@ actions:
                   contract:
                     address: 0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834
                   name: SubscriptionCreated
+              - network: 100
+                eventEmitted:
+                  contract:
+                    address: 0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834
+                  name: SubscriptionCancelled
+              - network: 100
+                eventEmitted:
+                  contract:
+                    address: 0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834
+                  name: Redeemed
 project_slug: ""
