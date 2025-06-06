@@ -4,7 +4,7 @@ actions:
     runtime: v2
     sources: actions
     specs:
-      block-number-printer:
+      block-redeemer:
         description: Example Web3 Action that logs block number once it is mined.
         function: index:blockWatchingRedeemer
         trigger:
@@ -12,7 +12,7 @@ actions:
           block:
             network:
               - 100
-            blocks: 10
+            blocks: 100
       subscription-event-hook:
         description: Triggers on Subscription Created Event
         function: index:entryPoint
