@@ -29,6 +29,7 @@ export const newSubscriptionEvent: ActionFn = async (
   context: Context,
   event: Event,
 ) => {
+  const store = context.storage;
   const tx = event as TransactionEvent;
   const subscriptionEvents = tx.logs
     .map((log, _) => {
@@ -55,11 +56,11 @@ export const newSubscriptionEvent: ActionFn = async (
       const event = args!;
       const txHash = await redeemPayment(redeemer, { ...event });
       console.log("Redeemed at", txHash);
-      await addSubscription(context.storage, subKey, event);
+      await addSubscription(store, subKey, event);
     } else if (eventName === "SubscriptionCancelled") {
-      await removeSubscription(context.storage, subKey);
+      await removeSubscription(store, subKey);
     } else if (eventName === "Redeemed") {
-      await appendRedemption(context.storage, subKey, args!.nextRedeemAt);
+      await appendRedemption(store, subKey, args!.nextRedeemAt);
     }
   }
 };
@@ -68,7 +69,8 @@ export async function runRedeemer(
   context: Context,
   now: bigint,
 ): Promise<void> {
-  const redemptions = await getValidRedemptions(context.storage, now);
+  const store = context.storage;
+  const redemptions = await getValidRedemptions(store, now);
   const redeemer = await getRedeemer(context.secrets);
   for (const [, subKeys] of Object.entries(redemptions)) {
     for (const subKey of subKeys) {
@@ -81,5 +83,5 @@ export async function runRedeemer(
       }
     }
   }
-  await removeRedemptionsBefore(context.storage, now);
+  await removeRedemptionsBefore(store, now);
 }
