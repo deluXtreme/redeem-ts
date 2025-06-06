@@ -9,12 +9,12 @@ import { subscriptionManagerAbi } from "./abi";
 import { Address, decodeEventLog, Hex, PrivateKeyAccount } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { redeemPayment } from "./redeem";
-import { convertSubscriptionEvent, SubscriptionDoc } from "./types";
 import {
   appendRedemption,
   getValidRedemptions,
   removeRedemptionsBefore,
 } from "./storage";
+import { addSubscription, getSubscription, removeSubscription } from "./storage/subscription";
 
 function subscriptionKey(subId: bigint, module: Address): string {
   return `${subId}-${module}`;
@@ -52,12 +52,12 @@ export const newSubscriptionEvent: ActionFn = async (
     console.log(`Processing ${eventName} Event with key`, subKey);
     if (eventName === "SubscriptionCreated") {
       // New subscriptions are immediately redeemable!
-      const event = convertSubscriptionEvent(args!);
+      const event = args!;
       const txHash = await redeemPayment(redeemer, { ...event });
       console.log("Redeemed at", txHash);
-      await context.storage.putJson(subKey, { ...event });
+      await addSubscription(context.storage, subKey, event);
     } else if (eventName === "SubscriptionCancelled") {
-      await context.storage.delete(subKey);
+      await removeSubscription(context.storage, subKey);
     } else if (eventName === "Redeemed") {
       await appendRedemption(context.storage, subKey, args!.nextRedeemAt);
     }
@@ -73,8 +73,7 @@ export async function runRedeemer(
   for (const [, subKeys] of Object.entries(redemptions)) {
     for (const subKey of subKeys) {
       try {
-        const subscription: SubscriptionDoc =
-          await context.storage.getJson(subKey);
+        const subscription = await getSubscription(context.storage, subKey);
         const txHash = await redeemPayment(redeemer, subscription);
         console.log(`Redeemed at:`, txHash);
       } catch (err) {

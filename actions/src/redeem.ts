@@ -9,7 +9,8 @@ import {
   Hash,
 } from "viem";
 import { gnosis } from "viem/chains";
-import { SubscriptionDoc } from "./types";
+import { SubscriptionEvent } from "./types";
+import { SubscriptionDoc } from "./storage/subscription";
 
 const rpcUrl = "https://rpc.aboutcircles.com/";
 const SUBSCRIPTION_MANAGER = getAddress(
@@ -52,7 +53,7 @@ const redeemAbi = [
 
 export async function redeemPayment(
   redeemer: PrivateKeyAccount,
-  subscription: SubscriptionDoc,
+  subscription: SubscriptionEvent | SubscriptionDoc,
 ): Promise<Hash> {
   console.log("Redeeming", subscription);
   const {
@@ -62,15 +63,16 @@ export async function redeemPayment(
     module,
     subId,
   } = subscription;
+  const targetFlowString = targetFlow.toString();
   const path = await findPath(rpcUrl, {
     from,
     to,
-    targetFlow,
+    targetFlow: targetFlowString,
     useWrappedBalances: true,
   });
 
   const { flowVertices, flowEdges, streams, packedCoordinates } =
-    createFlowMatrix(from, to, targetFlow, path.transfers);
+    createFlowMatrix(from, to, targetFlowString, path.transfers);
 
   const client = createWalletClient({
     chain: gnosis,
