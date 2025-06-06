@@ -1,0 +1,22 @@
+{
+  "lockfileVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "redeem-ts",
+      "dependencies": {
+        "@tenderly/actions": "^0.2.0",
+      },
+      "devDependencies": {
+        "prettier": "^3.5.3",
+        "typescript": "^4.3.5",
+      },
+    },
+  },
+  "packages": {
+    "@tenderly/actions": ["@tenderly/actions@0.2.126", "", {}, "sha512-8oVyob8OtXASq5NWfpNnAAvrZQoZSDAXnCGA/iF/QoiA1T1iLgdYYKcs1W0ZxKhB7tV5Vseur270IibZpTee7A=="],
+
+    "prettier": ["prettier@3.5.3", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw=="],
+
+    "typescript": ["typescript@4.9.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g=="],
+  }
+}

@@ -1,0 +1,16 @@
+account_id: ""
+actions:
+  bh2smith/project:
+    runtime: v2
+    sources: actions
+    specs:
+      block-number-printer:
+        description: Example Web3 Action that logs block number once it is mined.
+        function: example:blockHelloWorldFn
+        trigger:
+          type: block
+          block:
+            network:
+              - 100
+            blocks: 10
+project_slug: ""
