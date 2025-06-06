@@ -12,7 +12,9 @@ import { gnosis } from "viem/chains";
 import { SubscriptionDoc } from "./types";
 
 const rpcUrl = "https://rpc.aboutcircles.com/";
-const HUB_ADDRESS = getAddress("0xc12C1E50ABB450d6205Ea2C3Fa861b3B834d13e8");
+const SUBSCRIPTION_MANAGER = getAddress(
+  "0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834",
+);
 
 const redeemAbi = [
   {
@@ -53,7 +55,13 @@ export async function redeemPayment(
   subscription: SubscriptionDoc,
 ): Promise<Hash> {
   console.log("Redeeming", subscription);
-  const { recipient: to, subscriber: from, amount: targetFlow, module, subId } = subscription;
+  const {
+    recipient: to,
+    subscriber: from,
+    amount: targetFlow,
+    module,
+    subId,
+  } = subscription;
   const path = await findPath(rpcUrl, {
     from,
     to,
@@ -71,7 +79,7 @@ export async function redeemPayment(
   }).extend(publicActions);
 
   return client.writeContract({
-    address: HUB_ADDRESS,
+    address: SUBSCRIPTION_MANAGER,
     abi: redeemAbi,
     functionName: "redeemPayment",
     args: [

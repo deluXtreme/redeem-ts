@@ -17,7 +17,9 @@ export interface SubscriptionEvent {
   frequency: bigint;
 }
 
-export function convertSubscriptionEvent(event: SubscriptionEvent): SubscriptionDoc {
+export function convertSubscriptionEvent(
+  event: SubscriptionEvent,
+): SubscriptionDoc {
   return {
     recipient: event.recipient,
     subscriber: event.subscriber,

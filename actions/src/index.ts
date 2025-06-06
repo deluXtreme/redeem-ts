@@ -39,7 +39,6 @@ export const newSubscriptionEvent: ActionFn = async (
           topics: log.topics as [`0x${string}`],
         });
       } catch (err) {
-        // console.error(`Error decoding log ${index}:`, log, err);
         return null;
       }
     })
@@ -50,12 +49,12 @@ export const newSubscriptionEvent: ActionFn = async (
   for (const { eventName, args } of subscriptionEvents) {
     // These fields exist on all events!
     const subKey = subscriptionKey(args!.subId, args!.module);
-    console.log(`Processing ${eventName} Event with args`, args);
+    console.log(`Processing ${eventName} Event with key`, subKey);
     if (eventName === "SubscriptionCreated") {
       // New subscriptions are immediately redeemable!
       const event = convertSubscriptionEvent(args!);
       const txHash = await redeemPayment(redeemer, { ...event });
-      console.log("Redeemed first payment at", txHash);
+      console.log("Redeemed at", txHash);
       await context.storage.putJson(subKey, { ...event });
     } else if (eventName === "SubscriptionCancelled") {
       await context.storage.delete(subKey);
@@ -77,9 +76,9 @@ export async function runRedeemer(
         const subscription: SubscriptionDoc =
           await context.storage.getJson(subKey);
         const txHash = await redeemPayment(redeemer, subscription);
-        console.log(`Redeemed Payment for ${subKey} at:`, txHash);
+        console.log(`Redeemed at:`, txHash);
       } catch (err) {
-        console.error(`Failed to redeem for key ${subKey}:`, err);
+        console.error(`Failed to redeem ${subKey}:`, err);
       }
     }
   }
