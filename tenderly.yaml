@@ -6,11 +6,25 @@ actions:
     specs:
       block-number-printer:
         description: Example Web3 Action that logs block number once it is mined.
-        function: example:blockHelloWorldFn
+        function: index:blockHelloWorldFn
         trigger:
           type: block
           block:
             network:
               - 100
             blocks: 10
+      subscription-event-hook:
+        description: Triggers on Subscription Created Event
+        function: index:entryPoint
+        trigger:
+          type: transaction
+          transaction:
+            status:
+              - mined
+            filters:
+              - network: 100
+                eventEmitted:
+                  contract:
+                    address: 0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834
+                  name: SubscriptionCreated
 project_slug: ""
