@@ -12,7 +12,7 @@ actions:
           block:
             network:
               - 100
-            blocks: 100
+            blocks: 720 # One hour for 5 second block times.
       subscription-event-hook:
         description: Triggers on Subscription Created Event
         function: index:entryPoint

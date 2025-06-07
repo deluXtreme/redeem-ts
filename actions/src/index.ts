@@ -14,7 +14,11 @@ import {
   getValidRedemptions,
   removeRedemptionsBefore,
 } from "./storage";
-import { addSubscription, getSubscription, removeSubscription } from "./storage/subscription";
+import {
+  addSubscription,
+  getSubscription,
+  removeSubscription,
+} from "./storage/subscription";
 
 function subscriptionKey(subId: bigint, module: Address): string {
   return `${subId}-${module}`;
@@ -83,5 +87,6 @@ export async function runRedeemer(
       }
     }
   }
+  // This assumes all redemptions were successful.
   await removeRedemptionsBefore(store, now);
 }
