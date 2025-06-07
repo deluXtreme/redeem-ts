@@ -1,0 +1,34 @@
+name: Lint and Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        
+    - name: Install Dependencies
+      run: |
+        cd actions
+        npm install
+        
+    - name: Run Linting
+      run: |
+        cd actions
+        npm run fmt
+        
+    - name: Build Actions
+      run: |
+        npm install -g @tenderly/cli
+        tenderly actions build
