@@ -12,5 +12,5 @@ actions:
           block:
             network:
               - 100
-            blocks: 500 # ~ 40 minutes with 5 second blocks.
+            blocks: 100 # ~ 8 minutes with 5 second blocks.
 project_slug: ""
