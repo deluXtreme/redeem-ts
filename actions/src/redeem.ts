@@ -53,7 +53,6 @@ export async function redeemPayment(
   redeemer: PrivateKeyAccount,
   subscription: RedeemableSubscription,
 ): Promise<boolean> {
-  console.log("Redeeming", subscription);
   const {
     recipient: to,
     subscriber: from,
@@ -96,7 +95,7 @@ export async function redeemPayment(
       packedCoordinates as `0x${string}`,
     ],
   });
-  console.log(`Redeemed at:`, txHash);
+  console.log(`Redeemed ${sub_id}-${module} at:`, txHash);
   const receipt = await client.waitForTransactionReceipt({ hash: txHash });
   return receipt.status === "success";
 }
