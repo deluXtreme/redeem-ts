@@ -31,7 +31,7 @@ jobs:
     - name: Install Tenderly CLI
       run: |
         curl https://raw.githubusercontent.com/Tenderly/tenderly-cli/master/scripts/install-linux.sh | sh
-        tenderly login --access-token ${{ secrets.TENDERLY_ACCESS_TOKEN }}
+        tenderly login --access-key ${{ secrets.TENDERLY_ACCESS_KEY }}
         
     - name: Build Actions
       run: |
