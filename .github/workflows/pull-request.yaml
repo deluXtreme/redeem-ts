@@ -27,8 +27,11 @@ jobs:
       run: |
         cd actions
         npm run fmt
+
+    - name: Install Tenderly CLI
+      run: |
+        curl https://raw.githubusercontent.com/Tenderly/tenderly-cli/master/scripts/install-linux.sh | sh
         
     - name: Build Actions
       run: |
-        npm install -g @tenderly/cli
         tenderly actions build
