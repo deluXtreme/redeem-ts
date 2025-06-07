@@ -8,8 +8,7 @@ import {
   PrivateKeyAccount,
 } from "viem";
 import { gnosis } from "viem/chains";
-import { SubscriptionEvent } from "./types";
-import { SubscriptionDoc } from "./storage/subscription";
+import { RedeemableSubscription } from "./types";
 
 const CIRCLES_RPC = "https://rpc.aboutcircles.com/";
 const SUBSCRIPTION_MANAGER = getAddress(
@@ -52,7 +51,7 @@ const redeemAbi = [
 
 export async function redeemPayment(
   redeemer: PrivateKeyAccount,
-  subscription: SubscriptionEvent | SubscriptionDoc,
+  subscription: RedeemableSubscription,
 ): Promise<boolean> {
   console.log("Redeeming", subscription);
   const {
@@ -60,18 +59,22 @@ export async function redeemPayment(
     subscriber: from,
     amount: targetFlow,
     module,
-    subId,
+    sub_id,
   } = subscription;
-  const targetFlowString = targetFlow.toString();
   const path = await findPath(CIRCLES_RPC, {
-    from,
-    to,
-    targetFlow: targetFlowString,
+    from: getAddress(from),
+    to: getAddress(to),
+    targetFlow,
     useWrappedBalances: true,
   });
 
   const { flowVertices, flowEdges, streams, packedCoordinates } =
-    createFlowMatrix(from, to, targetFlowString, path.transfers);
+    createFlowMatrix(
+      getAddress(from),
+      getAddress(to),
+      targetFlow,
+      path.transfers,
+    );
 
   const client = createWalletClient({
     chain: gnosis,
@@ -84,8 +87,8 @@ export async function redeemPayment(
     abi: redeemAbi,
     functionName: "redeemPayment",
     args: [
-      module,
-      BigInt(subId),
+      getAddress(module),
+      BigInt(sub_id),
       flowVertices as `0x${string}`[],
       // Transform ethers to viem:
       flowEdges.map((e) => ({ ...e, amount: BigInt(e.amount.toString()) })),
