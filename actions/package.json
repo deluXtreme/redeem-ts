@@ -2,7 +2,8 @@
   "name": "redeem-ts",
   "scripts": {
     "build": "tsc",
-    "fmt": "prettier --write ."
+    "fmt": "prettier --write .",
+    "check": "prettier --check ."
   },
   "devDependencies": {
     "prettier": "^3.5.3",

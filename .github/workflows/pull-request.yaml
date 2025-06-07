@@ -23,16 +23,8 @@ jobs:
         cd actions
         npm install
         
-    - name: Run Linting
+    - name: Lint & Build
       run: |
         cd actions
-        npm run fmt
-
-    - name: Install Tenderly CLI
-      run: |
-        curl https://raw.githubusercontent.com/Tenderly/tenderly-cli/master/scripts/install-linux.sh | sh
-        tenderly login --access-key ${{ secrets.TENDERLY_ACCESS_KEY }}
-        
-    - name: Build Actions
-      run: |
-        tenderly actions build
+        npm run check
+        npm run build

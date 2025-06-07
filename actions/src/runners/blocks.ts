@@ -1,7 +1,7 @@
 import { Context } from "@tenderly/actions";
 import { redeemPayment } from "../redeem";
 import { AppStorage } from "../storage";
-import { getRedeemer} from "../utils";
+import { getRedeemer } from "../utils";
 
 export async function runRedeemer(
   context: Context,
@@ -10,7 +10,7 @@ export async function runRedeemer(
   const store = new AppStorage(context.storage);
   const [redemptions, redeemer] = await Promise.all([
     store.redemptions.getBefore(now),
-    getRedeemer(context.secrets)
+    getRedeemer(context.secrets),
   ]);
   const failures = [];
   for (const [, subKeys] of Object.entries(redemptions)) {

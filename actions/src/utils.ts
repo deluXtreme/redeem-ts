@@ -16,19 +16,19 @@ export async function getRedeemer(
 
 export function decodeSubscriptionEvents(logs: Log[]) {
   const relevantEvents = logs
-      .map((log, _) => {
-        try {
-          return decodeEventLog({
-            abi: subscriptionManagerAbi,
-            data: log.data as `0x${string}`,
-            topics: log.topics as [`0x${string}`],
-          });
-        } catch (err) {
-          return null;
-        }
-      })
-      .filter(
-        (decoded): decoded is NonNullable<typeof decoded> => decoded !== null,
-      );
-    return relevantEvents;
+    .map((log, _) => {
+      try {
+        return decodeEventLog({
+          abi: subscriptionManagerAbi,
+          data: log.data as `0x${string}`,
+          topics: log.topics as [`0x${string}`],
+        });
+      } catch (err) {
+        return null;
+      }
+    })
+    .filter(
+      (decoded): decoded is NonNullable<typeof decoded> => decoded !== null,
+    );
+  return relevantEvents;
 }
