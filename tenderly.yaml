@@ -13,28 +13,4 @@ actions:
             network:
               - 100
             blocks: 100 # ~ 8 minutes with 5 second blocks.
-      subscription-event-hook:
-        description: Triggers on Subscription Created Event
-        function: index:entryPoint
-        trigger:
-          type: transaction
-          transaction:
-            status:
-              - mined
-            filters:
-              - network: 100
-                eventEmitted:
-                  contract:
-                    address: 0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834
-                  name: SubscriptionCreated
-              - network: 100
-                eventEmitted:
-                  contract:
-                    address: 0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834
-                  name: SubscriptionCancelled
-              - network: 100
-                eventEmitted:
-                  contract:
-                    address: 0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834
-                  name: Redeemed
 project_slug: ""

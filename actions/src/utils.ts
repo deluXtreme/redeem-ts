@@ -1,11 +1,7 @@
-import { Log, Secrets } from "@tenderly/actions/lib/actions";
-import { Address, decodeEventLog, Hex, PrivateKeyAccount } from "viem";
+import { Secrets } from "@tenderly/actions/lib/actions";
+import { Hex, PrivateKeyAccount } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
-import { subscriptionManagerAbi } from "./abi";
-
-export function subscriptionKey(subId: bigint, module: Address): string {
-  return `${subId}-${module}`;
-}
+import { RedeemableSubscription } from "./types";
 
 export async function getRedeemer(
   secrets: Secrets,
@@ -14,21 +10,20 @@ export async function getRedeemer(
   return privateKeyToAccount(redeemerKey);
 }
 
-export function decodeSubscriptionEvents(logs: Log[]) {
-  const relevantEvents = logs
-    .map((log, _) => {
-      try {
-        return decodeEventLog({
-          abi: subscriptionManagerAbi,
-          data: log.data as `0x${string}`,
-          topics: log.topics as [`0x${string}`],
-        });
-      } catch (err) {
-        return null;
-      }
-    })
-    .filter(
-      (decoded): decoded is NonNullable<typeof decoded> => decoded !== null,
-    );
-  return relevantEvents;
+export async function fetchRedeemableSubscriptions(): Promise<
+  RedeemableSubscription[]
+> {
+  try {
+    const response = await fetch("https://subindexer-api.fly.dev/redeemable");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data as RedeemableSubscription[];
+  } catch (error) {
+    console.error("Failed to fetch redeemable subscriptions:", error);
+    throw error;
+  }
 }
