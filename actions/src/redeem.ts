@@ -11,8 +11,8 @@ import {
 import { gnosis } from "viem/chains";
 import { SubscriptionEvent } from "./types";
 import { SubscriptionDoc } from "./storage/subscription";
+import { CIRCLES_RPC } from "./constants";
 
-const rpcUrl = "https://rpc.aboutcircles.com/";
 const SUBSCRIPTION_MANAGER = getAddress(
   "0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834",
 );
@@ -54,7 +54,7 @@ const redeemAbi = [
 export async function redeemPayment(
   redeemer: PrivateKeyAccount,
   subscription: SubscriptionEvent | SubscriptionDoc,
-): Promise<Hash> {
+): Promise<boolean> {
   console.log("Redeeming", subscription);
   const {
     recipient: to,
@@ -64,7 +64,7 @@ export async function redeemPayment(
     subId,
   } = subscription;
   const targetFlowString = targetFlow.toString();
-  const path = await findPath(rpcUrl, {
+  const path = await findPath(CIRCLES_RPC, {
     from,
     to,
     targetFlow: targetFlowString,
@@ -76,11 +76,11 @@ export async function redeemPayment(
 
   const client = createWalletClient({
     chain: gnosis,
-    transport: http(rpcUrl),
+    transport: http(CIRCLES_RPC),
     account: redeemer,
   }).extend(publicActions);
 
-  return client.writeContract({
+  const txHash = await client.writeContract({
     address: SUBSCRIPTION_MANAGER,
     abi: redeemAbi,
     functionName: "redeemPayment",
@@ -94,4 +94,7 @@ export async function redeemPayment(
       packedCoordinates as `0x${string}`,
     ],
   });
+  console.log(`Redeemed at:`, txHash);
+  const receipt = await client.waitForTransactionReceipt({ hash: txHash });
+  return receipt.status === "success";
 }

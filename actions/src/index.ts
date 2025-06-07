@@ -6,7 +6,14 @@ import {
   TransactionEvent,
 } from "@tenderly/actions";
 import { subscriptionManagerAbi } from "./abi";
-import { Address, decodeEventLog, Hex, PrivateKeyAccount } from "viem";
+import {
+  Address,
+  createPublicClient,
+  decodeEventLog,
+  Hex,
+  http,
+  PrivateKeyAccount,
+} from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { redeemPayment } from "./redeem";
 import {
@@ -19,6 +26,7 @@ import {
   getSubscription,
   removeSubscription,
 } from "./storage/subscription";
+import { CIRCLES_RPC } from "./constants";
 
 function subscriptionKey(subId: bigint, module: Address): string {
   return `${subId}-${module}`;
@@ -58,9 +66,9 @@ export const newSubscriptionEvent: ActionFn = async (
     if (eventName === "SubscriptionCreated") {
       // New subscriptions are immediately redeemable!
       const event = args!;
+      await addSubscription(store, subKey, event);
       const txHash = await redeemPayment(redeemer, { ...event });
       console.log("Redeemed at", txHash);
-      await addSubscription(store, subKey, event);
     } else if (eventName === "SubscriptionCancelled") {
       await removeSubscription(store, subKey);
     } else if (eventName === "Redeemed") {
@@ -76,17 +84,20 @@ export async function runRedeemer(
   const store = context.storage;
   const redemptions = await getValidRedemptions(store, now);
   const redeemer = await getRedeemer(context.secrets);
+  const failures = [];
   for (const [, subKeys] of Object.entries(redemptions)) {
     for (const subKey of subKeys) {
       try {
         const subscription = await getSubscription(context.storage, subKey);
-        const txHash = await redeemPayment(redeemer, subscription);
-        console.log(`Redeemed at:`, txHash);
+        const success = await redeemPayment(redeemer, subscription);
+        if (!success) {
+          failures.push(subKey);
+        }
       } catch (err) {
         console.error(`Failed to redeem ${subKey}:`, err);
       }
     }
   }
   // This assumes all redemptions were successful.
-  await removeRedemptionsBefore(store, now);
+  await removeRedemptionsBefore(store, now, failures);
 }

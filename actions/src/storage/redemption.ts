@@ -60,6 +60,7 @@ export async function removeRedemptionByKey(
 export async function removeRedemptionsBefore(
   store: Storage,
   cutoffTime: bigint,
+  keepers: string[],
 ): Promise<void> {
   const key = "redemptions";
   const redemptions: RedemptionMap = (await store.getJson(key)) ?? {};
@@ -70,7 +71,8 @@ export async function removeRedemptionsBefore(
       delete redemptions[timeKey];
     }
   }
-
+  // Add back the keepers to time Zero.
+  redemptions["0"] = keepers;
   await store.putJson(key, redemptions);
 }
 
