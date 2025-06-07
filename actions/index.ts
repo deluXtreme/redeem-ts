@@ -1,8 +1,8 @@
 import { ActionFn, Context, Event } from "@tenderly/actions";
-import { newSubscriptionEvent, runRedeemer } from "./src";
+import { eventPipeline, runRedeemer } from "./src";
 
 export const entryPoint: ActionFn = async (context: Context, event: Event) => {
-  await newSubscriptionEvent(context, event);
+  await eventPipeline(context, event);
 };
 
 export const blockWatchingRedeemer: ActionFn = async (

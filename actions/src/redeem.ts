@@ -6,13 +6,12 @@ import {
   http,
   publicActions,
   PrivateKeyAccount,
-  Hash,
 } from "viem";
 import { gnosis } from "viem/chains";
 import { SubscriptionEvent } from "./types";
 import { SubscriptionDoc } from "./storage/subscription";
-import { CIRCLES_RPC } from "./constants";
 
+const CIRCLES_RPC = "https://rpc.aboutcircles.com/";
 const SUBSCRIPTION_MANAGER = getAddress(
   "0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834",
 );

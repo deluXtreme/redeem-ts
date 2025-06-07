@@ -12,9 +12,40 @@ export interface SubscriptionDoc {
   subId: string;
 }
 
-export function convertSubscriptionEvent(
-  event: SubscriptionEvent,
-): SubscriptionDoc {
+export class SubscriptionStorage {
+  private KEY = "subscriptions";
+
+  constructor(private store: Storage) {}
+
+  async load(): Promise<SubscriptionMap> {
+    const data: SubscriptionMap = (await this.store.getJson(this.KEY)) ?? {};
+    return data;
+  }
+
+  async add(key: string, value: SubscriptionEvent): Promise<void> {
+    const subscriptions = await this.load();
+    subscriptions[key] = convertSubscriptionEvent(value);
+    await this.store.putJson(key, subscriptions);
+  }
+
+  async remove(key: string) {
+    const data = await this.load();
+    if (key in data) {
+      delete data[key];
+      await this.store.putJson(this.KEY, data);
+    }
+  }
+
+  async get(key: string) {
+    const data = await this.load();
+    if (key in data) {
+      return data[key];
+    }
+    throw new Error(`Subscription ${key} not found`);
+  }
+}
+
+function convertSubscriptionEvent(event: SubscriptionEvent): SubscriptionDoc {
   return {
     recipient: event.recipient,
     subscriber: event.subscriber,
@@ -22,42 +53,4 @@ export function convertSubscriptionEvent(
     amount: event.amount.toString(),
     subId: event.subId.toString(),
   };
-}
-
-export async function addSubscription(
-  store: Storage,
-  subKey: string,
-  doc: SubscriptionEvent,
-): Promise<void> {
-  const key = "subscriptions";
-  const subscriptions: SubscriptionMap = (await store.getJson(key)) ?? {};
-
-  subscriptions[subKey] = convertSubscriptionEvent(doc);
-
-  await store.putJson(key, subscriptions);
-}
-export async function removeSubscription(
-  store: Storage,
-  subKey: string,
-): Promise<void> {
-  const key = "subscriptions";
-  const subscriptions: SubscriptionMap = (await store.getJson(key)) ?? {};
-
-  if (subKey in subscriptions) {
-    delete subscriptions[subKey];
-    await store.putJson(key, subscriptions);
-  }
-}
-
-export async function getSubscription(
-  store: Storage,
-  subKey: string,
-): Promise<SubscriptionDoc> {
-  const key = "subscriptions";
-  const subscriptions: SubscriptionMap = (await store.getJson(key)) ?? {};
-
-  if (subKey in subscriptions) {
-    return subscriptions[subKey];
-  }
-  throw new Error(`Subscription ${subKey} not found`);
 }
