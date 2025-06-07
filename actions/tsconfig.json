@@ -1,19 +1,22 @@
 {
-    "compileOnSave": true,
-    "compilerOptions": {
-        "module": "commonjs",
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "outDir": "out",
-        "rootDir": "",
-        "sourceMap": true,
-        "strict": true,
-        "target": "es2020"
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "lib": ["es2020"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "*": ["node_modules/*"]
     },
-    "exclude": [
-        "**/*.spec.ts"
-    ],
-    "include": [
-        "**/*"
-    ]
+    "types": ["node"]
+  },
+  "include": ["./index.ts", "src/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
