@@ -1,11 +1,7 @@
 import { Secrets } from "@tenderly/actions/lib/actions";
-import { Address, Hex, PrivateKeyAccount } from "viem";
+import { Hex, PrivateKeyAccount } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { RedeemableSubscription } from "./types";
-
-export function subscriptionKey(subId: bigint, module: Address): string {
-  return `${subId}-${module}`;
-}
 
 export async function getRedeemer(
   secrets: Secrets,
