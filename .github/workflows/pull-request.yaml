@@ -23,8 +23,9 @@ jobs:
         cd actions
         npm install
         
-    - name: Lint & Build
+    - name: Lint, Build & Test
       run: |
-        cd actions
         npm run check
         npm run build
+        npm run test
+      working-directory: actions
