@@ -71,30 +71,3 @@ export async function findPath(
 
   return json.result as PathfindingResult;
 }
-
-export async function findMaxFlow(
-  rpcUrl: string,
-  {
-    from,
-    to,
-    useWrappedBalances,
-    fromTokens,
-    toTokens,
-    excludeFromTokens,
-    excludeToTokens,
-  }: Omit<FindPathParams, "targetFlow">,
-): Promise<bigint> {
-  const targetFlow = "9999999999999999999999999999999999999";
-  const path = await findPath(rpcUrl, {
-    from,
-    to,
-    targetFlow,
-    useWrappedBalances,
-    fromTokens,
-    toTokens,
-    excludeFromTokens,
-    excludeToTokens,
-  });
-
-  return BigInt(path.maxFlow);
-}
