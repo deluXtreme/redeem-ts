@@ -100,7 +100,7 @@ export function createFlowMatrix(
     const isTerminal = t.to.toLowerCase() === receiver;
     return {
       streamSinkId: isTerminal ? 1 : 0,
-      amount: BigInt(t.value), // keep as string – ethers will convert
+      amount: t.value,
     };
   });
 

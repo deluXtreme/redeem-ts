@@ -3,6 +3,9 @@ import { Hex, PrivateKeyAccount } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { RedeemableSubscription } from "./types";
 
+const REDEEMABLE_SUBSCRIPTIONS_URL =
+  "https://subindexer-api.fly.dev/redeemable";
+
 export async function getRedeemer(
   secrets: Secrets,
 ): Promise<PrivateKeyAccount> {
@@ -14,7 +17,7 @@ export async function fetchRedeemableSubscriptions(): Promise<
   RedeemableSubscription[]
 > {
   try {
-    const response = await fetch("https://subindexer-api.fly.dev/redeemable");
+    const response = await fetch(REDEEMABLE_SUBSCRIPTIONS_URL);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -23,7 +26,7 @@ export async function fetchRedeemableSubscriptions(): Promise<
     const data = await response.json();
     return data as RedeemableSubscription[];
   } catch (error) {
-    console.error("Failed to fetch redeemable subscriptions:", error);
+    // console.error("Failed to fetch redeemable subscriptions:", error);
     throw error;
   }
 }
