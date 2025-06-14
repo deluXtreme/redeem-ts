@@ -12,7 +12,7 @@ export async function runRedeemer(secrets: Secrets): Promise<void> {
     try {
       await redeemPayment(redeemer, subscription);
     } catch (err) {
-      console.error(`Failed to redeem ${subscription.sub_id}:`, err);
+      console.error(`Failed to redeem ${subscription.id}:`, err);
     }
   }
 }
