@@ -1,4 +1,4 @@
-import { Address } from "viem";
+import { Address, getAddress, Hex } from "viem";
 import { ethers } from "ethers";
 
 export type PathfindingResult = {
@@ -25,17 +25,17 @@ export interface Stream {
 }
 
 export interface FlowMatrix {
-  flowVertices: string[]; // address[]
+  flowVertices: Address[]; // address[]
   flowEdges: FlowEdge[]; // tuple(uint16,uint192)[]
   streams: Stream[]; // tuple(uint16,uint16[],bytes)[]
-  packedCoordinates: string; // hex bytes
+  packedCoordinates: `0x${string}`; // hex bytes
   sourceCoordinate: number; // convenience, not part of ABI
 }
 
 /**
  * Pack a uint16 array into a hex string (big‑endian, no padding).
  */
-export function packCoordinates(coords: number[]): string {
+export function packCoordinates(coords: number[]): Hex {
   const bytes = new Uint8Array(coords.length * 2);
   coords.forEach((c, i) => {
     const hi = c >> 8;
@@ -44,7 +44,7 @@ export function packCoordinates(coords: number[]): string {
     bytes[offset] = hi;
     bytes[offset + 1] = lo;
   });
-  return ethers.hexlify(bytes);
+  return ethers.hexlify(bytes) as Hex;
 }
 
 /**
@@ -149,7 +149,7 @@ export function createFlowMatrix(
   }
 
   return {
-    flowVertices,
+    flowVertices: flowVertices.map(getAddress),
     flowEdges,
     streams,
     packedCoordinates,
