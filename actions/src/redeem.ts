@@ -6,58 +6,20 @@ import {
   http,
   publicActions,
   PrivateKeyAccount,
+  encodeAbiParameters,
+  parseAbi,
+  parseAbiParameters,
 } from "viem";
 import { gnosis } from "viem/chains";
-import { RedeemableSubscription } from "./types";
+import { Category, RedeemableSubscription } from "./types";
+import { encodeCallData } from "./encode";
 
 const CIRCLES_RPC = "https://rpc.aboutcircles.com/";
-const SUBSCRIPTION_MANAGER = getAddress("PUT_NEW_ADDRESS");
+const SUBSCRIPTION_MODULE = getAddress(
+  "0xD5dC464dD561782615D7495d1d7CEd301083c750",
+);
 
-const redeemAbi = [
-  {
-    inputs: [
-      { internalType: "bytes32", name: "id", type: "bytes32" },
-      { internalType: "address[]", name: "flowVertices", type: "address[]" },
-      {
-        components: [
-          { internalType: "uint16", name: "streamSinkId", type: "uint16" },
-          { internalType: "uint192", name: "amount", type: "uint192" },
-        ],
-        internalType: "struct TypeDefinitions.FlowEdge[]",
-        name: "flow",
-        type: "tuple[]",
-      },
-      {
-        components: [
-          { internalType: "uint16", name: "sourceCoordinate", type: "uint16" },
-          { internalType: "uint16[]", name: "flowEdgeIds", type: "uint16[]" },
-          { internalType: "bytes", name: "data", type: "bytes" },
-        ],
-        internalType: "struct TypeDefinitions.Stream[]",
-        name: "streams",
-        type: "tuple[]",
-      },
-      { internalType: "bytes", name: "packedCoordinates", type: "bytes" },
-    ],
-    name: "redeem",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    type: "function",
-    name: "redeemUntrusted",
-    inputs: [
-      {
-        name: "id",
-        type: "bytes32",
-        internalType: "bytes32",
-      },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-] as const;
+const redeemAbi = parseAbi(["function redeem(bytes32 id, bytes data)"]);
 
 export async function redeemPayment(
   redeemer: PrivateKeyAccount,
@@ -68,7 +30,7 @@ export async function redeemPayment(
     subscriber: from,
     amount: targetFlow,
     id,
-    trusted,
+    category,
   } = subscription;
   const client = createWalletClient({
     chain: gnosis,
@@ -76,12 +38,12 @@ export async function redeemPayment(
     account: redeemer,
   }).extend(publicActions);
   let txHash;
-  if (!trusted) {
+  if (category !== Category.Trusted) {
     txHash = await client.writeContract({
       abi: redeemAbi,
-      functionName: "redeemUntrusted",
-      address: SUBSCRIPTION_MANAGER,
-      args: [id],
+      functionName: "redeem",
+      address: SUBSCRIPTION_MODULE,
+      args: [id, "0x"],
     });
   } else {
     const path = await findPath(CIRCLES_RPC, {
@@ -91,21 +53,12 @@ export async function redeemPayment(
       useWrappedBalances: true,
     });
 
-    const { flowVertices, flowEdges, streams, packedCoordinates } =
-      createFlowMatrix(from, to, targetFlow, path.transfers);
-
+    const flowMatrix = createFlowMatrix(from, to, targetFlow, path.transfers);
     txHash = await client.writeContract({
-      address: SUBSCRIPTION_MANAGER,
+      address: SUBSCRIPTION_MODULE,
       abi: redeemAbi,
       functionName: "redeem",
-      args: [
-        id,
-        flowVertices,
-        // Transform ethers to viem:
-        flowEdges.map((e) => ({ ...e, amount: BigInt(e.amount.toString()) })),
-        streams.map((s) => ({ ...s, data: toHex(s.data) })),
-        packedCoordinates as `0x${string}`,
-      ],
+      args: [id, encodeCallData(flowMatrix)],
     });
   }
 

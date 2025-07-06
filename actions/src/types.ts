@@ -6,5 +6,11 @@ export interface RedeemableSubscription {
   recipient: Address;
   amount: string;
   next_redeem_at: number;
-  trusted: boolean;
+  category: Category;
+}
+
+export enum Category {
+  Trusted,
+  Untrusted,
+  Group,
 }
