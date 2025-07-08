@@ -1,14 +1,11 @@
 import { createFlowMatrix, findPath } from "./circles";
 import {
-  toHex,
   getAddress,
   createWalletClient,
   http,
   publicActions,
   PrivateKeyAccount,
-  encodeAbiParameters,
   parseAbi,
-  parseAbiParameters,
 } from "viem";
 import { gnosis } from "viem/chains";
 import { Category, RedeemableSubscription } from "./types";
@@ -16,7 +13,7 @@ import { encodeCallData } from "./encode";
 
 const CIRCLES_RPC = "https://rpc.aboutcircles.com/";
 const SUBSCRIPTION_MODULE = getAddress(
-  "0xD5dC464dD561782615D7495d1d7CEd301083c750",
+  "0x48BC28f8757cF5dc38eE7219DFf1c1F2b768737D",
 );
 
 const redeemAbi = parseAbi(["function redeem(bytes32 id, bytes data)"]);
