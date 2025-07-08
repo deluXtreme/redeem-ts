@@ -1,8 +1,16 @@
+import { Address } from "viem/_types";
+
 export interface RedeemableSubscription {
-  sub_id: string;
-  module: string;
-  subscriber: string;
-  recipient: string;
+  id: `0x${string}`;
+  subscriber: Address;
+  recipient: Address;
   amount: string;
   next_redeem_at: number;
+  category: Category;
+}
+
+export enum Category {
+  Trusted,
+  Untrusted,
+  Group,
 }
