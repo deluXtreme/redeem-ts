@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2020",
-    "module": "commonjs",
-    "lib": ["es2020"],
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext"],
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "outDir": "./dist",
     "rootDir": "./",
@@ -15,8 +16,10 @@
     "paths": {
       "*": ["node_modules/*"]
     },
-    "types": ["node"]
+    "types": ["node"],
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
-  "include": ["./index.ts", "src/**/*", "tests/**/*"],
+  "include": ["./index.ts", "src/**/*", "tests/**/*", "src/types/**/*"],
   "exclude": ["node_modules", "dist"]
 }

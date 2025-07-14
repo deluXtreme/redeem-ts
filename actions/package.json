@@ -2,6 +2,7 @@
   "name": "redeem-ts",
   "scripts": {
     "build": "tsc",
+    "main": "bun run src/main.ts",
     "fmt": "prettier --write .",
     "check": "prettier --check ."
   },
