@@ -1,9 +1,9 @@
 // Unit test encodeCallData
 import { encodeCallData, FlowMatrixAbi } from "../src/altEncode";
-import { createFlowMatrix, FlowMatrix } from "../src/circles/flowMatrix";
+import { createFlowMatrix } from "../src/circles/flowMatrix";
 import { findPath } from "../src/circles/findPath";
 import { Category } from "../src/types";
-import { decodeAbiParameters, getAddress, Hex, parseAbiParameters } from "viem";
+import { decodeAbiParameters, getAddress } from "viem";
 
 const CIRCLES_RPC = "https://rpc.aboutcircles.com/";
 
