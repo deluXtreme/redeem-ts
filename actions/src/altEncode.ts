@@ -1,6 +1,10 @@
 import { encodeAbiParameters, Hex, parseAbiParameters } from "viem";
 import { FlowMatrix } from "./circles/flowMatrix";
 
+export const FlowMatrixAbi = parseAbiParameters(
+  "(address[] flowVertices, (uint16 streamSinkId, uint192 amount)[] flowEdges, (uint16 sourceCoordinate, uint16[] flowEdgeIds, bytes data)[] streams, bytes packedCoordinates, uint256 sourceCoordinate)",
+);
+
 export function encodeCallData({
   flowVertices,
   flowEdges,
@@ -8,18 +12,13 @@ export function encodeCallData({
   packedCoordinates,
   sourceCoordinate,
 }: FlowMatrix): Hex {
-  return encodeAbiParameters(
-    parseAbiParameters(
-      "(address[] flowVertices, (uint16 streamSinkId, uint192 amount)[] flowEdges, (uint16 sourceCoordinate, uint16[] flowEdgeIds, bytes data)[] streams, bytes packedCoordinates, uint256 sourceCoordinate)",
-    ),
-    [
-      {
-        flowVertices,
-        flowEdges,
-        streams,
-        packedCoordinates,
-        sourceCoordinate,
-      },
-    ],
-  );
+  return encodeAbiParameters(FlowMatrixAbi, [
+    {
+      flowVertices,
+      flowEdges,
+      streams,
+      packedCoordinates,
+      sourceCoordinate,
+    },
+  ]);
 }
