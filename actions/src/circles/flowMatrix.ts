@@ -29,7 +29,7 @@ export interface FlowMatrix {
   flowEdges: FlowEdge[]; // tuple(uint16,uint192)[]
   streams: Stream[]; // tuple(uint16,uint16[],bytes)[]
   packedCoordinates: `0x${string}`; // hex bytes
-  sourceCoordinate: bigint; // convenience, not part of ABI
+  sourceCoordinate: number; // convenience, not part of ABI
 }
 
 /**
@@ -153,6 +153,6 @@ export function createFlowMatrix(
     flowEdges,
     streams,
     packedCoordinates,
-    sourceCoordinate: BigInt(idx[sender]),
+    sourceCoordinate: idx[sender],
   };
 }

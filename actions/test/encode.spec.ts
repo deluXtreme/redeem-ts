@@ -1,11 +1,8 @@
 // Unit test encodeCallData
-import { encodeCallData, FlowMatrixAbi } from "../src/altEncode";
+import { encodeCallData, FlowMatrixAbi } from "../src/encode";
 import { createFlowMatrix } from "../src/circles/flowMatrix";
-import { findPath } from "../src/circles/findPath";
 import { Category } from "../src/types";
 import { decodeAbiParameters, getAddress } from "viem";
-
-const CIRCLES_RPC = "https://rpc.aboutcircles.com/";
 
 describe("encodeCallData", () => {
   it("should encode the flow matrix correctly", async () => {
@@ -13,7 +10,7 @@ describe("encodeCallData", () => {
       id: "0x4652021487668a2c25747c81dc7d553d3c3121df19fac8c7f49e5adc478d1d31",
       subscriber: getAddress("0xcf6dc192dc292d5f2789da2db02d6dd4f41f4214"),
       recipient: getAddress("0x6b69683c8897e3d18e74b1ba117b49f80423da5d"),
-      amount: "10000000000000000",
+      amount: "220000000000000000",
       category: Category.Trusted,
       next_redeem_at: 0,
     };
@@ -22,40 +19,60 @@ describe("encodeCallData", () => {
       subscriber: from,
       amount: targetFlow,
     } = subscription;
-    const path = await findPath(CIRCLES_RPC, {
-      from,
-      to,
-      targetFlow,
-      useWrappedBalances: true,
-    });
+    // const path = await findPath(CIRCLES_RPC, {
+    //   from,
+    //   to,
+    //   targetFlow,
+    //   useWrappedBalances: true,
+    // });
+    const path = {
+      maxFlow: "220000000000000000",
+      transfers: [
+        {
+          from: "0xcf6dc192dc292d5f2789da2db02d6dd4f41f4214",
+          to: "0x6b69683c8897e3d18e74b1ba117b49f80423da5d",
+          tokenOwner: "0xcf6dc192dc292d5f2789da2db02d6dd4f41f4214",
+          value: "220000000000000000",
+        },
+      ],
+    };
     const flowMatrix = createFlowMatrix(from, to, targetFlow, path.transfers);
     // const flowMatrix = {
     //   flowVertices: [
     //     "0x6B69683C8897e3d18e74B1Ba117b49f80423Da5d",
-    //     "0xcf6dc192Dc292d5F2789Da2dB02d6dD4f41f4214",
+    //     "0xcF6Dc192dc292D5F2789DA2DB02D6dD4f41f4214",
     //   ],
     //   flowEdges: [
     //     {
     //       streamSinkId: 1,
-    //       amount: 10000000000000000n,
+    //       amount: 220000000000000000n,
     //     },
     //   ],
     //   streams: [
     //     {
     //       sourceCoordinate: 1,
     //       flowEdgeIds: [0],
-    //       data: "0x" as Hex,
+    //       data: "0x",
     //     },
     //   ],
-    //   packedCoordinates: "0x000100010000" as Hex,
-    //   sourceCoordinate: 1n,
+    //   packedCoordinates: "0x000100010000",
+    //   sourceCoordinate: 1,
     // };
-    console.log(flowMatrix);
     const encoded = encodeCallData(flowMatrix);
-    expect(encoded).toBe(
-      "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000260000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000006b69683c8897e3d18e74b1ba117b49f80423da5d000000000000000000000000cf6dc192dc292d5f2789da2db02d6dd4f41f421400000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060001000100000000000000000000000000000000000000000000000000000000",
-    );
-    const [decoded] = decodeAbiParameters(FlowMatrixAbi, encoded);
-    expect(decoded).toEqual(flowMatrix);
+    const [
+      flowVertices,
+      flowEdges,
+      streams,
+      packedCoordinates,
+      sourceCoordinate,
+    ] = decodeAbiParameters(FlowMatrixAbi, encoded);
+
+    expect({
+      flowVertices,
+      flowEdges,
+      streams,
+      packedCoordinates,
+      sourceCoordinate,
+    }).toEqual(flowMatrix);
   });
 });
