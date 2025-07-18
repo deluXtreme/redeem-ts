@@ -13,7 +13,7 @@ import { encodeCallData } from "./encode";
 
 const CIRCLES_RPC = "https://rpc.aboutcircles.com/";
 const SUBSCRIPTION_MODULE = getAddress(
-  "0x48BC28f8757cF5dc38eE7219DFf1c1F2b768737D",
+  "0xcEbE4B6d50Ce877A9689ce4516Fe96911e099A78",
 );
 
 const redeemAbi = parseAbi(["function redeem(bytes32 id, bytes data)"]);
