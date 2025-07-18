@@ -30,3 +30,10 @@ yarn fmt
 - The `actions` directory is a standalone Node.js project
 - Linting commands must be run from within the `actions` directory
 - Use `yarn fmt` for formatting code in the actions directory
+
+
+### Docker
+
+```sh
+docker run --env-file .env ghcr.io/deluxtreme/redeem-ts
+```

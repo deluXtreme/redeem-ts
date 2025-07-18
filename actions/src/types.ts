@@ -10,7 +10,7 @@ export interface RedeemableSubscription {
 }
 
 export enum Category {
-  Trusted,
-  Untrusted,
-  Group,
+  Trusted = "trusted",
+  Untrusted = "untrusted",
+  Group = "group",
 }

@@ -5,12 +5,14 @@ import { fetchRedeemableSubscriptions, getSecrets } from "./utils";
 export async function runRedeemer(secrets: Secrets): Promise<void> {
   const { redeemer, apiUrl } = await getSecrets(secrets);
   const redeemable = await fetchRedeemableSubscriptions(apiUrl);
-  console.log(`Found ${redeemable.length} redeemable subscriptions`);
+  console.log(
+    `Found ${redeemable.length} redeemable subscription(s): ${JSON.stringify(redeemable, null, 2)}`,
+  );
   for (const subscription of redeemable) {
     try {
       await redeemPayment(redeemer, subscription);
     } catch (err) {
-      console.error(`Failed to redeem ${subscription.id}:`, err);
+      throw new Error(`Failed to redeem ${subscription.id}: ${err}`);
     }
   }
 }
@@ -31,7 +33,7 @@ export async function main(): Promise<void> {
   try {
     console.log("Starting redeemer process...");
     await runRedeemer(secrets);
-    console.log("Redeemer process completed successfully");
+    console.log("Redeemer process completed");
   } catch (error) {
     console.error("Redeemer process failed:", error);
     process.exit(1);
