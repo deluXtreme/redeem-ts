@@ -15,13 +15,13 @@ export type TransferStep = {
 
 export interface FlowEdge {
   streamSinkId: number;
-  amount: ethers.BigNumberish;
+  amount: bigint;
 }
 
 export interface Stream {
   sourceCoordinate: number;
   flowEdgeIds: number[];
-  data: Uint8Array;
+  data: Hex;
 }
 
 export interface FlowMatrix {
@@ -29,7 +29,7 @@ export interface FlowMatrix {
   flowEdges: FlowEdge[]; // tuple(uint16,uint192)[]
   streams: Stream[]; // tuple(uint16,uint16[],bytes)[]
   packedCoordinates: `0x${string}`; // hex bytes
-  sourceCoordinate: number; // convenience, not part of ABI
+  sourceCoordinate: bigint; // convenience, not part of ABI
 }
 
 /**
@@ -123,7 +123,7 @@ export function createFlowMatrix(
     {
       sourceCoordinate: idx[sender],
       flowEdgeIds: termEdgeIds,
-      data: new Uint8Array(0),
+      data: "0x",
     },
   ];
 
@@ -149,10 +149,10 @@ export function createFlowMatrix(
   }
 
   return {
-    flowVertices: flowVertices.map(getAddress),
+    flowVertices: flowVertices.map((v) => getAddress(v)),
     flowEdges,
     streams,
     packedCoordinates,
-    sourceCoordinate: idx[sender],
+    sourceCoordinate: BigInt(idx[sender]),
   };
 }
