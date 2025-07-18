@@ -7,7 +7,7 @@ export function encodeCallData({
   streams,
   packedCoordinates,
   sourceCoordinate,
-}: FlowMatrix): Hex {  
+}: FlowMatrix): Hex {
   return encodeAbiParameters(
     parseAbiParameters(
       "(address[] flowVertices, (uint16 streamSinkId, uint192 amount)[] flowEdges, (uint16 sourceCoordinate, uint16[] flowEdgeIds, bytes data)[] streams, bytes packedCoordinates, uint256 sourceCoordinate)",
