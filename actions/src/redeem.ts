@@ -1,4 +1,4 @@
-import { getAddress, parseAbi } from "viem";
+import { getAddress, Hex, parseAbi } from "viem";
 import { Category, RedeemableSubscription, ConnectedWallet } from "./types";
 import { encodeCallData } from "./encode";
 import { getFlowMatrix } from "./utils";
@@ -21,14 +21,15 @@ export async function redeemPayment(
   const { id, category } = subscription;
   console.log("Redeeming with", redeemer.account.address);
   try {
-    const args = [id, "0x"];
+    let calldata = "0x" as Hex;
     if (category === Category.Trusted) {
       const flowMatrix = await getFlowMatrix(CIRCLES_RPC, subscription);
-      args[1] = encodeCallData(flowMatrix);
+      calldata = encodeCallData(flowMatrix);
     }
+
     const txHash = await redeemer.writeContract({
       ...transactionData,
-      args: [id, "0x"],
+      args: [id, calldata],
     });
     console.log(`Redeemed ${id} at:`, txHash);
   } catch (err) {
