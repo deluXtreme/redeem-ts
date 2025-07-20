@@ -1,39 +1,39 @@
 # Redeem TS
 
-## Overview
-This project contains [Tenderly actions](https://docs.tenderly.co/web3-actions/intro-to-web3-actions) for running a subscription redeemer.
+Redeemer script for [Circles Subscriptions](https://github.com/deluXtreme/). Depends on the existence of
 
-## Project Structure
+- [SubIndexer](https://github.com/deluXtreme/subindexer) running an API endpoint for "redeemable" subscriptions.
+
+## Run Options
+
+All runners require supplying `API_URL` & `REDEEMER_KEY` (cf. [.env.sample](./.env.sample)).
+
+### Docker Image
+
+```sh
+docker run --env-file .env ghcr.io/deluxtreme/redeem-ts
+```
+
+### Bun Run
+```sh
+cd actions && bun install
+bun run src/main.ts
+```
+
+### Tenderly Actions
+
+This project contains [Tenderly actions](https://docs.tenderly.co/web3-actions/intro-to-web3-actions) for running a subscription redeemer which can be configured to run every N blocks.
+
+#### Project Structure
 
 The project has a unique structure where the `actions` directory is a separate Node.js project with its own package management and linting configuration.
 
-## Commands
+#### Commands
 
-### Primary Commands
 ```bash
 # Build Tenderly actions
 tenderly actions build
 
 # Deploy Tenderly actions
 tenderly actions deploy
-```
-
-### Linting
-Since the `actions` directory is a separate Node.js project, linting is performed from within that directory:
-
-```bash
-cd actions
-yarn fmt
-```
-
-## Development Notes
-- The `actions` directory is a standalone Node.js project
-- Linting commands must be run from within the `actions` directory
-- Use `yarn fmt` for formatting code in the actions directory
-
-
-### Docker
-
-```sh
-docker run --env-file .env ghcr.io/deluxtreme/redeem-ts
 ```
