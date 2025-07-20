@@ -1,4 +1,4 @@
-import { Address, getAddress, Hex } from "viem";
+import { Address, formatEther, getAddress, Hex } from "viem";
 import { ethers } from "ethers";
 
 export type PathfindingResult = {
@@ -144,7 +144,7 @@ export function createFlowMatrix(
   const isBalanced = terminalSum === expected;
   if (!isBalanced) {
     throw new Error(
-      `Terminal sum ${terminalSum} does not equal expected ${expected}`,
+      `Terminal sum ${formatEther(terminalSum)} does not equal expected ${formatEther(expected)}`,
     );
   }
 

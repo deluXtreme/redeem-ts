@@ -2,18 +2,17 @@ import { Secrets } from "@tenderly/actions/lib/actions";
 import { Hex, PrivateKeyAccount } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { RedeemableSubscription } from "./types";
+import { createFlowMatrix, findPath, FlowMatrix } from "./circles";
 
 export async function getSecrets(
   secrets: Secrets,
-): Promise<{ redeemer: PrivateKeyAccount; apiUrl: URL }> {
+): Promise<{ redeemerKey: `0x${string}`; apiUrl: URL }> {
   const [apiUrl, pk] = await Promise.all([
     secrets.get("API_URL"),
     secrets.get("REDEEMER_KEY"),
   ]);
   return {
-    redeemer: privateKeyToAccount(
-      pk.startsWith("0x") ? (pk as Hex) : `0x${pk}`,
-    ),
+    redeemerKey: pk.startsWith("0x") ? (pk as Hex) : `0x${pk}`,
     apiUrl: new URL(apiUrl),
   };
 }
@@ -38,4 +37,19 @@ export async function fetchRedeemableSubscriptions(
   } finally {
     clearTimeout(timeout);
   }
+}
+
+export async function getFlowMatrix(
+  rpcUrl: string,
+  subscription: RedeemableSubscription,
+): Promise<FlowMatrix> {
+  const { recipient: to, subscriber: from, amount, periods } = subscription;
+  const targetFlow = (BigInt(amount) * BigInt(periods)).toString();
+  const path = await findPath(rpcUrl, {
+    from,
+    to,
+    targetFlow,
+    useWrappedBalances: true,
+  });
+  return createFlowMatrix(from, to, targetFlow, path.transfers);
 }

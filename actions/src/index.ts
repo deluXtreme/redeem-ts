@@ -1,13 +1,21 @@
 import { Secrets } from "@tenderly/actions/lib/actions";
 import { redeemPayment } from "./redeem";
 import { fetchRedeemableSubscriptions, getSecrets } from "./utils";
+import { createWalletClient, http, publicActions } from "viem";
+import { gnosis } from "viem/_types/chains";
+import { privateKeyToAccount } from "viem/accounts";
 
 export async function runRedeemer(secrets: Secrets): Promise<void> {
-  const { redeemer, apiUrl } = await getSecrets(secrets);
+  const { redeemerKey, apiUrl } = await getSecrets(secrets);
   const redeemable = await fetchRedeemableSubscriptions(apiUrl);
   console.log(
     `Found ${redeemable.length} redeemable subscription(s): ${JSON.stringify(redeemable, null, 2)}`,
   );
+  const redeemer = createWalletClient({
+    account: privateKeyToAccount(redeemerKey),
+    chain: gnosis,
+    transport: http(),
+  }).extend(publicActions);
   for (const subscription of redeemable) {
     try {
       await redeemPayment(redeemer, subscription);
