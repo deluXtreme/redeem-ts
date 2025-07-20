@@ -14,7 +14,7 @@
   "dependencies": {
     "@tenderly/actions": "^0.2.136",
     "ethers": "^6.15.0",
-    "viem": "2.25.0"
+    "viem": "2.21.0"
   },
   "private": true
 }
