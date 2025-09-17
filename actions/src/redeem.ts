@@ -24,6 +24,7 @@ export async function redeemPayment(
     let calldata = "0x" as Hex;
     if (category === Category.Trusted) {
       const flowMatrix = await getFlowMatrix(CIRCLES_RPC, subscription);
+      console.log("FlowMatrix", flowMatrix);
       calldata = encodeCallData(flowMatrix);
     }
 
