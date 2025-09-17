@@ -12,7 +12,6 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "ethers": "^6.15.0",
     "viem": "2.21.0"
   },
   "private": true

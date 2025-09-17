@@ -1,5 +1,4 @@
-import { Address, formatEther, getAddress, Hex } from "viem";
-import { ethers } from "ethers";
+import { Address, formatEther, getAddress, Hex, toHex } from "viem";
 
 export type PathfindingResult = {
   maxFlow: string;
@@ -44,7 +43,7 @@ export function packCoordinates(coords: number[]): Hex {
     bytes[offset] = hi;
     bytes[offset + 1] = lo;
   });
-  return ethers.hexlify(bytes) as Hex;
+  return toHex(bytes);
 }
 
 /**
