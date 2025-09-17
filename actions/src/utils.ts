@@ -49,7 +49,7 @@ export async function getFlowMatrix(
     from,
     to,
     targetFlow,
-    useWrappedBalances: true,
+    useWrappedBalances: false,
   });
   return createFlowMatrix(from, to, targetFlow, path.transfers);
 }
