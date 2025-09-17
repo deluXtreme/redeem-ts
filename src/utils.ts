@@ -1,7 +1,5 @@
-import { Secrets } from "@tenderly/actions/lib/actions";
-import { Hex, PrivateKeyAccount } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
-import { RedeemableSubscription } from "./types";
+import { Hex } from "viem";
+import { RedeemableSubscription, Secrets } from "./types";
 import { createFlowMatrix, findPath, FlowMatrix } from "./circles";
 
 export async function getSecrets(

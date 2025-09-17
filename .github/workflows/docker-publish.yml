@@ -13,7 +13,7 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: docker/login-action@v3
         with:
@@ -31,8 +31,8 @@ jobs:
       - name: Push Redeem Image
         uses: docker/build-push-action@v6
         with:
-          context: ./actions
-          file: ./actions/Dockerfile
+          context: ./
+          file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
