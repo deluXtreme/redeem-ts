@@ -23,7 +23,7 @@ describe.skip("RPC Based Tests", () => {
     console.log("Flow Matrix", flowMatrix);
 
     const encoded = encodeCallData(flowMatrix);
-    
+
     console.log("Encoded", encoded);
     const [
       flowVertices,
