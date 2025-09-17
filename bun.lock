@@ -4,7 +4,6 @@
     "": {
       "name": "redeem-ts",
       "dependencies": {
-        "@tenderly/actions": "^0.2.136",
         "ethers": "^6.15.0",
         "viem": "2.21.0",
       },
@@ -45,8 +44,6 @@
     "@scure/bip39": ["@scure/bip39@1.3.0", "", { "dependencies": { "@noble/hashes": "~1.4.0", "@scure/base": "~1.1.6" } }, "sha512-disdg7gHuTDZtY+ZdkmLpPCk7fxZSu3gBiEGuoC1XYxv9cGx3Z6cpTggCgW6odSOOIXCiDjuGejW+aJKCY/pIQ=="],
 
     "@sinclair/typebox": ["@sinclair/typebox@0.34.38", "", {}, "sha512-HpkxMmc2XmZKhvaKIZZThlHmx1L0I/V1hWK1NubtlFnr6ZqdiOpV72TKudZUNQjZNsyDBay72qFEhEvb+bcwcA=="],
-
-    "@tenderly/actions": ["@tenderly/actions@0.2.136", "", {}, "sha512-/WEm1AAP4LEAUjVQIeeys1hXu0sfGkk1Ku+0xr3EJ2pqkb6NAWfOPZtXUSDph2vgHrb6zYZi0EPSCF1ZzYsDbA=="],
 
     "@types/istanbul-lib-coverage": ["@types/istanbul-lib-coverage@2.0.6", "", {}, "sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w=="],
 
