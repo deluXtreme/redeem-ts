@@ -1,19 +1,5 @@
-import { Hex } from "viem";
-import { RedeemableSubscription, Secrets } from "./types";
+import { RedeemableSubscription } from "./types";
 import { createFlowMatrix, findPath, FlowMatrix } from "./circles";
-
-export async function getSecrets(
-  secrets: Secrets,
-): Promise<{ redeemerKey: `0x${string}`; apiUrl: URL }> {
-  const [apiUrl, pk] = await Promise.all([
-    secrets.get("API_URL"),
-    secrets.get("REDEEMER_KEY"),
-  ]);
-  return {
-    redeemerKey: pk.startsWith("0x") ? (pk as Hex) : `0x${pk}`,
-    apiUrl: new URL(apiUrl),
-  };
-}
 
 export async function fetchRedeemableSubscriptions(
   apiUrl: URL,
