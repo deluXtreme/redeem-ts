@@ -9,10 +9,10 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "prettier": "^3.6.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "viem": "^2.37.6"
+    "viem": "^2.38.4"
   },
   "private": true
 }
